@@ -1,21 +1,21 @@
 ﻿@page "/"
 @using System.IO
 @using System.Diagnostics
+@using dascontract_forms_editor.Pages.Renderer
 @inject IJSRuntime js
 
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm">
-      One of three columns
+        <FormsRenderer @ref="formsRenderer"></FormsRenderer>
     </div>
     <div class="col-sm">
         <MatButton OnClick="@NewFile">New</MatButton>
 		<MatButton style="position:relative">Upload<MatFileUpload OnChange="@UploadFile" AllowMultiple="false" style="width:100%;height:1%;opacity:0;position:absolute" Label=""></MatFileUpload></MatButton>
         <MatButton OnClick="@SaveFile">Save</MatButton>
-        <MatButton OnClick="@ValidateContent">Validate</MatButton>
         <MatButton OnClick="@RenderContent">Render</MatButton>
-        <br />
-		<div id="code-editor">
+        <MatButton TrailingIcon="@valid_button_icon" OnClick="@ValidateContent">Model valid:</MatButton>
+        <div id="code-editor">
 			<MonacoEditor @ref="_editor" Id="code-editor" ConstructionOptions="EditorConstructionOptions" />
 		</div>
     </div>
@@ -24,19 +24,28 @@
 
 
 @code {
+    string valid_button_icon = "mode_standby";
+    FormsRenderer formsRenderer;
     private MonacoEditor _editor { get; set; }
-    private string defaultEditorText = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    private string defaultEditorText = "<Form>\n    <FieldGroup>\n        \n    </FieldGroup>\n</Form>";
  
     void NewFile(MouseEventArgs e) {
         _editor.SetValue(defaultEditorText);
     }
 
-    void ValidateContent(MouseEventArgs e) {
-
+    async void ValidateContent(MouseEventArgs e) {
+        if (formsRenderer.validModel(await _editor.GetValue())) {
+            valid_button_icon = "check_circle_outline";
+        } else {
+            valid_button_icon = "not_interested";
+        }
+        await InvokeAsync(StateHasChanged);
     }
 
-    void RenderContent(MouseEventArgs e) {
-
+    async void RenderContent(MouseEventArgs e) {
+        ValidateContent(null);
+        formsRenderer.renderModel(await _editor.GetValue());        
+        await InvokeAsync(StateHasChanged);
     }
 
     async void SaveFile(MouseEventArgs e) {
@@ -59,7 +68,7 @@
                 }
             }
         } catch (Exception e) {
-            Console.WriteLine("Error while uploading file!" + $"Error:\n{e.Message}\n{e.StackTrace}");
+            Console.WriteLine("Error while uploading file!\n" + $"Error:\n{e.Message}\n{e.StackTrace}");
             await _editor.SetValue($"Error:\n{e.Message}\n{e.StackTrace}");
         } finally {
             await InvokeAsync(StateHasChanged);
