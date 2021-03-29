@@ -1,0 +1,12 @@
+﻿
+
+<MatTextField @bind-Value="field.Data" Label="@field.Label" Outlined="true"></MatTextField>
+
+@code {
+    [CascadingParameter]
+    Form form { get; set; }
+    [CascadingParameter]
+    FieldGroup group { get; set; }
+    [CascadingParameter]
+    SingleLineField field { get; set; }
+}

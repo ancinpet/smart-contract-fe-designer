@@ -1,14 +1,20 @@
 ﻿@using System.Xml.Serialization
 @using System.IO
 @using System.Xml
+@using dascontract_forms_editor.Pages.Renderer.Forms
 
+<br />
+<CascadingValue Value="@form">
+    <DForm></DForm>
+</CascadingValue>
 
-
-<p>Donde esta la biblioteca?</p>
 
 @code {
+    Form form;
+
     public void renderModel(string textContent) {
-        Form form;
+        form = new Form();
+        InvokeAsync(StateHasChanged);
         using (TextReader reader = new StringReader(textContent)) {
             XmlSerializer serializer = create_throwing_serializer();
             XmlReader xmlreader = new XmlTextReader(reader);
@@ -19,7 +25,6 @@
                 return;
             }
         }
-
         InvokeAsync(StateHasChanged);
     }
 
@@ -53,93 +58,4 @@
         serializer.UnknownNode += new XmlNodeEventHandler(Serializer_Throw);
         return serializer;
     }
-
-    [XmlRootAttribute("Form")]
-    public class Form {
-        public string Name { get; set; }
-
-        [XmlElement("FieldGroup")]
-        public List<FieldGroup> FieldGroups { get; set; }
-    }
-
-    public class FieldGroup {
-        public string Id { get; set; }
-        public string Label { get; set; }
-        public bool Vertical { get; set; }
-        public bool Displayed { get; set; }
-
-        [XmlElement("DateField", typeof(DateField))]
-        [XmlElement("AddressField", typeof(AddressField))]
-        [XmlElement("SingleLineField", typeof(SingleLineField))]
-        [XmlElement("MultiLineField", typeof(MultiLineField))]
-        [XmlElement("IntField", typeof(IntField))]
-        [XmlElement("DecimalField", typeof(DecimalField))]
-        [XmlElement("BoolField", typeof(BoolField))]
-        [XmlElement("EnumField", typeof(EnumField))]
-        [XmlElement("DropdownField", typeof(DropdownField))]
-        public List<Field> Fields { get; set; }
-    }
-
-    public class Field {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string Label { get; set; }
-        public string Description { get; set; }
-        public bool ReadOnly { get; set; }
-    }
-
-    public class DateField: Field {
-        public DateTime Data { get; set; }
-    }
-
-    public class AddressField: Field {
-        public string Data { get; set; }
-    }
-
-    public class SingleLineField: Field {
-        public string Data { get; set; }
-    }
-
-    public class MultiLineField: Field {
-        public string Data { get; set; }
-    }
-
-    public class IntField: Field {
-        public long Data { get; set; }
-    }
-
-    public class DecimalField: Field {
-        public decimal Data { get; set; }
-    }
-
-    public class BoolField: Field {
-        public bool Data { get; set; }
-    }
-
-    public class EnumField: Field {
-        [XmlElement("Data")]
-        public List<string> Data { get; set; }
-    }
-
-    public class DropdownField: Field {
-        [XmlElement("Data")]
-        public List<string> Data { get; set; }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

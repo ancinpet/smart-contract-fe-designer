@@ -1,0 +1,28 @@
+﻿<style>
+.mat-card-cont {
+    padding: 1rem;
+}
+</style>
+
+@if (form != null) {
+    <MatCard>
+            <div class="mat-card-cont">
+                @if (form.Name != null && form.Name != "") {
+                    <MatHeadline6>
+                        @form.Name
+                    </MatHeadline6>
+                }
+                @foreach (FieldGroup group in form.FieldGroups) {
+                    <CascadingValue Value="@group">
+                        <DFieldGroup></DFieldGroup>
+                    </CascadingValue>
+                    <br />
+                }
+            </div>
+    </MatCard>
+}
+
+@code {
+    [CascadingParameter]
+    Form form { get; set; }
+}

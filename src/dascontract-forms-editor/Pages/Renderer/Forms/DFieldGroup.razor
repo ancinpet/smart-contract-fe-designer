@@ -1,0 +1,24 @@
+﻿@using dascontract_forms_editor.Pages.Renderer.Forms.Fields
+
+@if (group != null && group.Displayed) {
+    @if (group.Label != null) {
+        <MatSubtitle2>
+            @group.Label
+        </MatSubtitle2>
+    }
+    @foreach (Field field in group.Fields) {
+        <CascadingValue Value="@field">
+            <DField></DField>
+        </CascadingValue>
+        @if (group.Vertical) {
+            <br />
+        }
+    }
+}
+
+@code {
+    [CascadingParameter]
+    Form form { get; set; }
+    [CascadingParameter]
+    FieldGroup group { get; set; }
+}
