@@ -1,6 +1,9 @@
 ﻿
 
-
+@if (field.Label != null && field.Label != "") {
+    <span>@field.Label</span><br>
+}
+<MatDatePicker @bind-Value="field.Data" EnableTime="true" Enable24hours="true"></MatDatePicker>
 
 @code {
     [CascadingParameter]

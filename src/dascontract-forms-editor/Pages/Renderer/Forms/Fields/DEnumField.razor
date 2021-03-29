@@ -1,6 +1,9 @@
 ﻿
 
-
+@if (field.Label != null && field.Label != "") {
+    <span>@field.Label</span><br>
+}
+<MatRadioGroup Items="@field.Data" Outlined="true" Style="min-width: 100%"></MatRadioGroup>
 
 @code {
     [CascadingParameter]

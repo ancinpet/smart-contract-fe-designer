@@ -1,6 +1,9 @@
 ﻿
 
-
+@if (field.Label != null && field.Label != "") {
+    <span>@field.Label</span><br>
+}
+<MatSelectItem Items="@field.Data" Outlined="true" Style="min-width: 100%"></MatSelectItem>
 
 @code {
     [CascadingParameter]
