@@ -5,7 +5,15 @@ using System;
 using System.ComponentModel;
 
 namespace dascontract_forms_editor {
-    [XmlRootAttribute("Form")]
+    [XmlRootAttribute("Contract")]
+    public class Contract {
+        public string Name { get; set; } = "";
+        public string ABI { get; set; } = "";
+
+        [XmlElement("Form")]
+        public List<Form> Forms { get; set; } = new List<Form>();
+    }
+
     public class Form {
         public string Name { get; set; } = "";
 

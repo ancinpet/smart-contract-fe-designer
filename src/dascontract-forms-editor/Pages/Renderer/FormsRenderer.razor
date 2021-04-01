@@ -4,22 +4,22 @@
 @using dascontract_forms_editor.Pages.Renderer.Forms
 
 <br />
-<CascadingValue Value="@form">
-    <DForm></DForm>
+<CascadingValue Value="@contract">
+    <DContract></DContract>
 </CascadingValue>
 
 
 @code {
-    Form form;
+    Contract contract;
 
     public void renderModel(string textContent) {
-        form = new Form();
+        contract = new Contract();
         InvokeAsync(StateHasChanged);
         using (TextReader reader = new StringReader(textContent)) {
             XmlSerializer serializer = create_throwing_serializer();
             XmlReader xmlreader = new XmlTextReader(reader);
             try {
-                form = (Form)serializer.Deserialize(xmlreader);
+                contract = (Contract)serializer.Deserialize(xmlreader);
             } catch (Exception e) {
                 Console.WriteLine("Error parsing XML!\n" + $"Error:\n{e.Message}\n{e.StackTrace}");
                 return;
@@ -33,8 +33,8 @@
             try {
                 XmlSerializer serializer = create_throwing_serializer();
                 XmlReader xmlreader = new XmlTextReader(reader);
-                Form form = (Form)serializer.Deserialize(xmlreader);
-                return form != null;
+                Contract contract = (Contract)serializer.Deserialize(xmlreader);
+                return contract != null;
             } catch (Exception e) {
                 Console.WriteLine("Error parsing XML!\n" + $"Error:\n{e.Message}\n{e.StackTrace}");
                 return false;
@@ -52,7 +52,7 @@
         throw new Exception("XML format exception.");
     }
     private XmlSerializer create_throwing_serializer() {
-        XmlSerializer serializer = new XmlSerializer(typeof(Form));
+        XmlSerializer serializer = new XmlSerializer(typeof(Contract));
         serializer.UnknownAttribute += new XmlAttributeEventHandler(Serializer_Throw);
         serializer.UnknownElement += new XmlElementEventHandler(Serializer_Throw);
         serializer.UnknownNode += new XmlNodeEventHandler(Serializer_Throw);

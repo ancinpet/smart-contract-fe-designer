@@ -1,0 +1,16 @@
+﻿
+
+@if (contract != null) {
+    @foreach (Form form in contract.Forms) {
+        <CascadingValue Value="@form">
+            <DForm></DForm>
+        </CascadingValue>
+        <br />
+        <br />
+    }
+}
+
+@code {
+    [CascadingParameter]
+    Contract contract { get; set; }
+}
