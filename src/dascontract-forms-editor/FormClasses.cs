@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace dascontract_forms_editor {
     [XmlRootAttribute("Contract")]
-    public class Contract {
+    public class DContract {
         [XmlAttribute("Name")]
         public string Name { get; set; } = "";
         [XmlElement("ABI")]

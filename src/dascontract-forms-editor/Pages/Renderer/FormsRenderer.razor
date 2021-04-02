@@ -5,21 +5,21 @@
 
 <br />
 <CascadingValue Value="@contract">
-    <DContract></DContract>
+    <DContracts></DContracts>
 </CascadingValue>
 
 
 @code {
-    Contract contract;
+    DContract contract;
 
     public void renderModel(string textContent) {
-        contract = new Contract();
+        contract = new DContract();
         InvokeAsync(StateHasChanged);
         using (TextReader reader = new StringReader(textContent)) {
             XmlSerializer serializer = create_throwing_serializer();
             XmlReader xmlreader = new XmlTextReader(reader);
             try {
-                contract = (Contract)serializer.Deserialize(xmlreader);
+                contract = (DContract)serializer.Deserialize(xmlreader);
             } catch (Exception e) {
                 Console.WriteLine("Error parsing XML!\n" + $"Error:\n{e.Message}\n{e.StackTrace}");
                 return;
@@ -33,7 +33,7 @@
             try {
                 XmlSerializer serializer = create_throwing_serializer();
                 XmlReader xmlreader = new XmlTextReader(reader);
-                Contract contract = (Contract)serializer.Deserialize(xmlreader);
+                DContract contract = (DContract)serializer.Deserialize(xmlreader);
                 return contract != null;
             } catch (Exception e) {
                 Console.WriteLine("Error parsing XML!\n" + $"Error:\n{e.Message}\n{e.StackTrace}");
@@ -52,7 +52,7 @@
         throw new Exception("XML format exception.");
     }
     private XmlSerializer create_throwing_serializer() {
-        XmlSerializer serializer = new XmlSerializer(typeof(Contract));
+        XmlSerializer serializer = new XmlSerializer(typeof(DContract));
         serializer.UnknownAttribute += new XmlAttributeEventHandler(Serializer_Throw);
         serializer.UnknownElement += new XmlElementEventHandler(Serializer_Throw);
         serializer.UnknownNode += new XmlNodeEventHandler(Serializer_Throw);
