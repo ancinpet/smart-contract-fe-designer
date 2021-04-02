@@ -7,7 +7,9 @@ using System.ComponentModel;
 namespace dascontract_forms_editor {
     [XmlRootAttribute("Contract")]
     public class Contract {
+        [XmlAttribute("Name")]
         public string Name { get; set; } = "";
+        [XmlElement("ABI")]
         public string ABI { get; set; } = "";
 
         [XmlElement("Form")]
@@ -15,16 +17,21 @@ namespace dascontract_forms_editor {
     }
 
     public class Form {
-        public string Name { get; set; } = "";
+        [XmlAttribute("Label")]
+        public string Label { get; set; } = "";
+        [XmlElement("FuncBind")]
+        public string FuncBind { get; set; } = "";
 
         [XmlElement("FieldGroup")]
         public List<FieldGroup> FieldGroups { get; set; } = new List<FieldGroup>();
     }
 
     public class FieldGroup {
-        public string Id { get; set; }
+        [XmlAttribute("Label")]
         public string Label { get; set; } = "";
+        [XmlAttribute("Vertical")]
         public bool Vertical { get; set; } = true;
+        [XmlAttribute("Displayed")]
         public bool Displayed { get; set; } = true;
 
         [XmlElement("DateField", typeof(DateField))]
@@ -40,48 +47,62 @@ namespace dascontract_forms_editor {
     }
 
     public class Field {
-        public string Id { get; set; }
-        public string Name { get; set; } = "";
+        [XmlElement("ParamBind")]
+        public string ParamBind { get; set; } = "";
+        [XmlElement("ViewBind")]
+        public string ViewBind { get; set; } = "";
+        [XmlAttribute("Label")]
         public string Label { get; set; }
+        [XmlAttribute("Description")]
         public string Description { get; set; } = "";
+        [XmlAttribute("ReadOnly")]
         public bool ReadOnly { get; set; } = false;
     }
 
     public class DateField : Field {
+        [XmlIgnoreAttribute]
         public DateTime Data { get; set; }
     }
 
     public class AddressField : Field {
+        [XmlIgnoreAttribute]
         public string Data { get; set; }
     }
 
     public class SingleLineField : Field {
+        [XmlIgnoreAttribute]
         public string Data { get; set; }
     }
 
     public class MultiLineField : Field {
+        [XmlIgnoreAttribute]
         public string Data { get; set; }
     }
 
     public class IntField : Field {
+        [XmlIgnoreAttribute]
         public long Data { get; set; }
     }
 
     public class DecimalField : Field {
+        [XmlIgnoreAttribute]
         public decimal Data { get; set; }
     }
 
     public class BoolField : Field {
+        [XmlIgnoreAttribute]
         public bool Data { get; set; }
     }
 
     public class EnumField : Field {
-        [XmlElement("Data")]
-        public List<string> Data { get; set; } = new List<string>();
+        [XmlAttribute("Vertical")]
+        public bool Vertical { get; set; } = false;
+        [XmlIgnoreAttribute]
+        public List<string> Data { get; set; } = new List<string> { "A", "B", "C"};
     }
 
     public class DropdownField : Field {
-        [XmlElement("Data")]
-        public List<string> Data { get; set; } = new List<string>();
+        [XmlIgnoreAttribute]
+        public List<string> Data { get; set; } = new List<string> { "A", "B", "C" };
     }
 }

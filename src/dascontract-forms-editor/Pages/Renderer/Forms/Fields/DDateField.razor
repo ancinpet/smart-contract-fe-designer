@@ -1,9 +1,16 @@
 ﻿
 
-@if (field.Label != null && field.Label != "") {
+@if (!String.IsNullOrEmpty(field.Label)) {
     <span>@field.Label</span><br>
 }
-<MatDatePicker @bind-Value="field.Data" EnableTime="true" Enable24hours="true"></MatDatePicker>
+<MatDatePicker @bind-Value="field.Data" ReadOnly="@field.ReadOnly" EnableTime="true" Enable24hours="true"></MatDatePicker>
+@if (!String.IsNullOrEmpty(field.Description)) {
+    <MatTooltip Tooltip="@field.Description">
+        <div @ref="context.Current" style="display:inline-block;">
+            <MatIcon Style="font-size:2.2em;vertical-align:middle;">help_outline</MatIcon>
+        </div>
+    </MatTooltip>
+}
 
 @code {
     [CascadingParameter]

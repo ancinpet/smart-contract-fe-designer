@@ -1,11 +1,10 @@
 ﻿@using dascontract_forms_editor.Pages.Renderer.Forms.Fields
 
 @if (group != null && group.Displayed) {
-    @if (group.Label != null && group.Label != "") {
+    @if (!String.IsNullOrEmpty(group.Label)) {
         <MatSubtitle2>
             @group.Label
         </MatSubtitle2>
-        <br />
     }
 
     @if (group.Vertical) {

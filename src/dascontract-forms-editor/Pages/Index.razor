@@ -6,8 +6,8 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm" style="max-width: 55vw;">
-        <div style="position: fixed;">
+    <div class="col-sm" style="max-width:55vw;">
+        <div style="position:fixed;min-width:55vw;">
             <MatButton OnClick="@NewFile">New</MatButton>
 		    <MatButton style="position:relative">Upload<MatFileUpload OnChange="@UploadFile" AllowMultiple="false" style="width:100%;height:1%;opacity:0;position:absolute" Label=""></MatFileUpload></MatButton>
             <MatButton OnClick="@SaveFile">Save</MatButton>
@@ -18,7 +18,7 @@
 		    </div>
         </div>
     </div>
-    <div class="col-sm" style="max-width: 48vw">
+    <div class="col-sm" style="max-width:48vw">
         <FormsRenderer @ref="formsRenderer"></FormsRenderer>
     </div>
   </div>

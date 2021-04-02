@@ -1,4 +1,6 @@
-﻿<style>
+﻿@using dascontract_forms_editor.Pages.Renderer.Forms.Buttons
+
+<style>
 .mat-card-cont {
     padding: 1rem;
 }
@@ -7,9 +9,9 @@
 @if (form != null) {
     <MatCard>
             <div class="mat-card-cont">
-                @if (form.Name != null && form.Name != "") {
+                @if (!String.IsNullOrEmpty(form.Label)) {
                     <MatHeadline6>
-                        @form.Name
+                        @form.Label
                     </MatHeadline6>
                 }
                 @foreach (FieldGroup group in form.FieldGroups) {
@@ -18,6 +20,7 @@
                     </CascadingValue>
                 }
             </div>
+            <DSubmitButton></DSubmitButton>
     </MatCard>
 }
 
