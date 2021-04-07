@@ -3,6 +3,7 @@ using System.Xml;
 using System.Collections.Generic;
 using System;
 using System.ComponentModel;
+using System.Linq;
 
 namespace dascontract_forms_editor {
     [XmlRootAttribute("Contract")]
@@ -19,7 +20,7 @@ namespace dascontract_forms_editor {
     public class Form {
         [XmlAttribute("Label")]
         public string Label { get; set; } = "";
-        [XmlElement("FuncBind")]
+        [XmlAttribute("FuncBind")]
         public string FuncBind { get; set; } = "";
 
         [XmlElement("FieldGroup")]
@@ -46,10 +47,10 @@ namespace dascontract_forms_editor {
         public List<Field> Fields { get; set; } = new List<Field>();
     }
 
-    public class Field {
-        [XmlElement("ParamBind")]
+    public abstract class Field {
+        [XmlAttribute("ParamBind")]
         public string ParamBind { get; set; } = "";
-        [XmlElement("ViewBind")]
+        [XmlAttribute("ViewBind")]
         public string ViewBind { get; set; } = "";
         [XmlAttribute("Label")]
         public string Label { get; set; }
@@ -57,52 +58,207 @@ namespace dascontract_forms_editor {
         public string Description { get; set; } = "";
         [XmlAttribute("ReadOnly")]
         public bool ReadOnly { get; set; } = false;
+
+        public abstract void SetData(string data);
+        public abstract void SetDataList(List<string> data);
+        public abstract object GetData();
     }
 
     public class DateField : Field {
         [XmlIgnoreAttribute]
         public DateTime Data { get; set; }
+
+        public override void SetData(string data) {
+            Data = DateTime.Parse(data);
+        }
+
+        public override void SetDataList(List<string> data) {
+            if (data.Count > 0) {
+                Data = DateTime.Parse(data[0]);
+            }
+        }
+
+        public override object GetData() {
+            return Data;
+        }
     }
 
     public class AddressField : Field {
         [XmlIgnoreAttribute]
         public string Data { get; set; }
+
+        public override void SetData(string data) {
+            Data = data;
+        }
+
+        public override void SetDataList(List<string> data) {
+            Data = string.Join(',', data);
+        }
+
+        public override object GetData() {
+            return Data;
+        }
     }
 
     public class SingleLineField : Field {
         [XmlIgnoreAttribute]
         public string Data { get; set; }
+
+        public override void SetData(string data) {
+            Data = data;
+        }
+
+        public override void SetDataList(List<string> data) {
+            Data = string.Join(',', data);
+        }
+
+        public override object GetData() {
+            return Data;
+        }
     }
 
     public class MultiLineField : Field {
         [XmlIgnoreAttribute]
         public string Data { get; set; }
+
+        public override void SetData(string data) {
+            Data = data;
+        }
+
+        public override void SetDataList(List<string> data) {
+            Data = string.Join(Environment.NewLine, data);
+        }
+
+        public override object GetData() {
+            return Data;
+        }
     }
 
     public class IntField : Field {
         [XmlIgnoreAttribute]
         public long Data { get; set; }
+
+        public override void SetData(string data) {
+            Data = Convert.ToInt64(data);
+        }
+
+        public override void SetDataList(List<string> data) {
+            if (data.Count > 0) {
+                Data = Convert.ToInt64(data[0]);
+            }
+        }
+
+        public override object GetData() {
+            return Data;
+        }
     }
 
     public class DecimalField : Field {
         [XmlIgnoreAttribute]
         public decimal Data { get; set; }
+
+        public override void SetData(string data) {
+            Data = Convert.ToDecimal(data);
+        }
+
+        public override void SetDataList(List<string> data) {
+            if (data.Count > 0) {
+                Data = Convert.ToDecimal(data[0]);
+            }
+        }
+
+        public override object GetData() {
+            return Data;
+        }
     }
 
     public class BoolField : Field {
         [XmlIgnoreAttribute]
         public bool Data { get; set; }
+
+        public override void SetData(string data) {
+            Data = Convert.ToBoolean(data);
+        }
+
+        public override void SetDataList(List<string> data) {
+            if (data.Count > 0) {
+                Data = Convert.ToBoolean(data[0]);
+            }
+        }
+
+        public override object GetData() {
+            return Data;
+        }
     }
 
     public class EnumField : Field {
         [XmlAttribute("Vertical")]
         public bool Vertical { get; set; } = false;
+
         [XmlIgnoreAttribute]
-        public List<string> Data { get; set; } = new List<string> { "A", "B", "C"};
+        public int Data { get; set; } = -1;
+        [XmlElement("Option")]
+        public List<string> Options { get; set; } = new List<string>();
+        [XmlAttribute("Indexed")]
+        public bool Indexed { get; set; } = false;
+
+        public override void SetData(string data) {
+            for (int i = 0; i < Options.Count; ++i) {
+                if (Options[i] == data) {
+                    Data = i;
+                    return;
+                }
+            }
+        }
+
+        public override void SetDataList(List<string> data) {
+            Options = data;
+            if (Data == 0 && Options.Count > 1) {
+                Data = 1;
+            }
+            Data = 0;
+        }
+
+        public override object GetData() {
+            if (Indexed) {
+                return Data;
+            } else {
+                return Options[Data];
+            }
+        }
     }
 
     public class DropdownField : Field {
         [XmlIgnoreAttribute]
-        public List<string> Data { get; set; } = new List<string> { "A", "B", "C" };
+        public int Data { get; set; } = -1;
+        [XmlElement("Option")]
+        public List<string> Options { get; set; } = new List<string>();
+        [XmlAttribute("Indexed")]
+        public bool Indexed { get; set; } = false;
+
+        public override void SetData(string data) {
+            for (int i = 0; i < Options.Count; ++i) {
+                if (Options[i] == data) {
+                    Data = i;
+                    return;
+                }
+            }
+        }
+
+        public override void SetDataList(List<string> data) {
+            Options = data;
+            if (Data == 0 && Options.Count > 1) {
+                Data = 1;
+            }
+            Data = 0;
+        }
+
+        public override object GetData() {
+            if (Indexed) {
+                return Data;
+            } else {
+                return Options[Data];
+            }
+        }
     }
 }
