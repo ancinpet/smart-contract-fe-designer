@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 
 namespace dascontract_forms_editor {
-    [XmlRootAttribute("Contract")]
+    [XmlRootAttribute("ContractForms")]
     public class DContract {
         [XmlAttribute("Name")]
         public string Name { get; set; } = "";
@@ -22,6 +22,12 @@ namespace dascontract_forms_editor {
         public string Label { get; set; } = "";
         [XmlAttribute("FuncBind")]
         public string FuncBind { get; set; } = "";
+        [XmlAttribute("StateMachine")]
+        public string StateMachine { get; set; } = "";
+        [XmlAttribute("Role")]
+        public string Role { get; set; } = "";
+        [XmlAttribute("RoleMachine")]
+        public string RoleMachine { get; set; } = "";
 
         [XmlElement("FieldGroup")]
         public List<FieldGroup> FieldGroups { get; set; } = new List<FieldGroup>();
@@ -119,7 +125,7 @@ namespace dascontract_forms_editor {
 
     public class MultiLineField : Field {
         [XmlIgnoreAttribute]
-        public string Data { get; set; }
+        public string Data { get; set; } = Environment.NewLine;
 
         public override void SetData(string data) {
             Data = data;
