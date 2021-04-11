@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Numerics;
 
 namespace dascontract_forms_editor {
     [XmlRootAttribute("ContractForms")]
@@ -64,6 +65,8 @@ namespace dascontract_forms_editor {
         public string Description { get; set; } = "";
         [XmlAttribute("ReadOnly")]
         public bool ReadOnly { get; set; } = false;
+        [XmlIgnoreAttribute]
+        public bool Currency { get; set; } = false;
 
         public abstract void SetData(string data);
         public abstract void SetDataList(List<string> data);
@@ -107,6 +110,9 @@ namespace dascontract_forms_editor {
     }
 
     public class SingleLineField : Field {
+        [XmlAttribute("Currency")]
+        public new bool Currency { get; set; } = false;
+
         [XmlIgnoreAttribute]
         public string Data { get; set; }
 
@@ -125,7 +131,7 @@ namespace dascontract_forms_editor {
 
     public class MultiLineField : Field {
         [XmlIgnoreAttribute]
-        public string Data { get; set; } = Environment.NewLine;
+        public string Data { get; set; }
 
         public override void SetData(string data) {
             Data = data;
@@ -160,6 +166,8 @@ namespace dascontract_forms_editor {
     }
 
     public class DecimalField : Field {
+        [XmlAttribute("Currency")]
+        public new bool Currency { get; set; } = false;
         [XmlIgnoreAttribute]
         public decimal Data { get; set; }
 

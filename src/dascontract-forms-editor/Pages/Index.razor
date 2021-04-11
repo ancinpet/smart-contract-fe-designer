@@ -29,7 +29,7 @@
     string valid_button_icon = "mode_standby";
     FormsRenderer formsRenderer;
     private MonacoEditor _editor { get; set; }
-    private string defaultEditorText = "<Contract>\n    <Form>\n        <FieldGroup>\n            \n        </FieldGroup>\n    </Form>\n</Contract>";
+    private string defaultEditorText = "<ContractForms Name=\"Manage properties\">\n    <Form Label=\"My first form\">\n        <FieldGroup>\n            <SingleLineField Label=\"Hello world\" />\n        </FieldGroup>\n    </Form>\n</ContractForms>";
  
     void NewFile(MouseEventArgs e) {
         _editor.SetValue(defaultEditorText);
